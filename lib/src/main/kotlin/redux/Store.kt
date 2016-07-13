@@ -16,7 +16,9 @@ package redux
  * limitations under the License.
  */
 
-interface Store<S : Any, A : Any> : Dispatcher<A> {
+interface Store<S : Any, A : Any> {
+
+	fun dispatch(a: A)
 
 	fun getState(): S
 
@@ -61,7 +63,7 @@ interface Store<S : Any, A : Any> : Dispatcher<A> {
 			this.state = state
 		}
 
-		override fun dispatch(action: A): A {
+		override fun dispatch(action: A) {
 			if (isDispatching) {
 				throw IllegalAccessError("Reducers may not dispatch actions.")
 			}
@@ -75,8 +77,6 @@ interface Store<S : Any, A : Any> : Dispatcher<A> {
 			}
 
 			subscribers.forEach { it.onStateChanged() }
-
-			return action
 		}
 
 		override fun getState(): S {

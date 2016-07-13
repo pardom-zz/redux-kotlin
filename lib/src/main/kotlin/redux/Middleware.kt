@@ -18,7 +18,7 @@ package redux
 
 interface Middleware<S : Any, A : Any> {
 
-	fun dispatch(store: Store<S, A>, action: A): A
+	fun dispatch(store: Store<S, A>, action: A)
 
 	private class Enhancer<S : Any, A : Any>(val middlewares: Array<out Middleware<S, A>>) : Store.Enhancer<S, A> {
 
@@ -45,10 +45,9 @@ interface Middleware<S : Any, A : Any> {
 			val store: Store<S, A>,
 			val middleware: Array<out Middleware<S, A>>) : Store<S, A> by store {
 
-		override fun dispatch(action: A): A {
-			return middleware.foldRight(store.dispatch(action)) { middleware, combined ->
-				middleware.dispatch(store, action)
-			}
+		override fun dispatch(action: A) {
+			middleware.forEach { it.dispatch(store, action) }
+			store.dispatch(action)
 		}
 
 	}
