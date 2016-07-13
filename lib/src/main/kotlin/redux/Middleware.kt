@@ -16,7 +16,9 @@ package redux
  * limitations under the License.
  */
 
-interface Middleware<out S : Any, A : Any> : Stateful<S>, Dispatcher<A> {
+interface Middleware<S : Any, A : Any> {
+
+	fun dispatch(store: Store<S, A>, action: A): A
 
 	private class Enhancer<S : Any, A : Any>(val middlewares: Array<out Middleware<S, A>>) : Store.Enhancer<S, A> {
 
@@ -45,7 +47,7 @@ interface Middleware<out S : Any, A : Any> : Stateful<S>, Dispatcher<A> {
 
 		override fun dispatch(action: A): A {
 			return middleware.foldRight(store.dispatch(action)) { middleware, combined ->
-				middleware.dispatch(combined)
+				middleware.dispatch(store, action)
 			}
 		}
 
