@@ -1,21 +1,5 @@
-group 'redux'
-version '1.0-SNAPSHOT'
-
-buildscript {
-	ext.kotlin_version = '1.0.3'
-
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-	}
-}
-
 apply plugin: 'java'
 apply plugin: 'kotlin'
-
-sourceCompatibility = 1.5
 
 repositories {
 	jcenter()
@@ -25,7 +9,10 @@ repositories {
 	}
 }
 
-dependencies {}
+sourceSets {
+	main.kotlin.srcDirs += 'src/main/kotlin'
+	test.kotlin.srcDirs += 'src/test/kotlin'
+}
 
 dependencies {
 	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
