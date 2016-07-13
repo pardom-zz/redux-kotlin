@@ -18,7 +18,7 @@ package redux
 
 interface Middleware<S : Any, A : Any> {
 
-	fun dispatch(store: Store<S, A>, action: A)
+	fun dispatch(store: Store<S, A>, action: A, next: Dispatcher<A>): A
 
 	private class Enhancer<S : Any, A : Any>(val middlewares: Array<out Middleware<S, A>>) : Store.Enhancer<S, A> {
 
@@ -42,12 +42,26 @@ interface Middleware<S : Any, A : Any> {
 	}
 
 	private class Delegate<S : Any, A : Any>(
-			val store: Store<S, A>,
-			val middleware: Array<out Middleware<S, A>>) : Store<S, A> by store {
+			store: Store<S, A>,
+			middlewares: Array<out Middleware<S, A>>) : Store<S, A> by store {
 
-		override fun dispatch(action: A) {
-			middleware.forEach { it.dispatch(store, action) }
-			store.dispatch(action)
+		val rootDispatcher = middlewares.foldRight(store as Dispatcher<A>) { middleware, next ->
+			Wrapper(middleware, store, next)
+		}
+
+		override fun dispatch(action: A): A {
+			return rootDispatcher.dispatch(action)
+		}
+
+		class Wrapper<S : Any, A : Any>(
+				val middleware: Middleware<S, A>,
+				val store: Store<S, A>,
+				val next: Dispatcher<A>) : Dispatcher<A> {
+
+			override fun dispatch(action: A): A {
+				return middleware.dispatch(store, action, next)
+			}
+
 		}
 
 	}
