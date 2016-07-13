@@ -18,7 +18,7 @@ package redux
 
 interface Store<S : Any, A : Any> {
 
-	fun dispatch(a: A)
+	fun dispatch(action: A)
 
 	fun getState(): S
 
