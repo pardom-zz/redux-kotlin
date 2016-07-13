@@ -16,7 +16,9 @@ package redux
  * limitations under the License.
  */
 
-interface Store<S : Any, A : Any> : Stateful<S>, Dispatcher<A> {
+interface Store<S : Any, A : Any> : Dispatcher<A> {
+
+	fun getState(): S
 
 	fun subscribe(subscriber: Subscriber): Subscription
 
