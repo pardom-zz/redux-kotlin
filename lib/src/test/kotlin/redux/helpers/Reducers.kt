@@ -29,9 +29,9 @@ object Reducers {
 		} + 1
 	}
 
-	object TODOS : Reducer<State, Action> {
+	object TODOS : Reducer<State> {
 
-		override fun reduce(state: State, action: Action): State {
+		override fun reduce(state: State, action: Any): State {
 			return when (action) {
 				is Action.AddTodo -> state.copy(todos = state.todos + Todo(id(state), action.todo))
 				else -> state
@@ -40,9 +40,9 @@ object Reducers {
 
 	}
 
-	object TODOS_REVERSE : Reducer<State, Action> {
+	object TODOS_REVERSE : Reducer<State> {
 
-		override fun reduce(state: State, action: Action): State {
+		override fun reduce(state: State, action: Any): State {
 			return when (action) {
 				is Action.AddTodo -> state.copy(todos = listOf(Todo(id(state), action.todo)) + state.todos)
 				else -> state

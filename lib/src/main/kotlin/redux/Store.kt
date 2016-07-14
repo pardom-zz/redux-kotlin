@@ -16,23 +16,23 @@ package redux
  * limitations under the License.
  */
 
-interface Store<S : Any, A : Any> : Dispatcher<A> {
+interface Store<S : Any> : Dispatcher {
 
 	fun getState(): S
 
 	fun subscribe(subscriber: Subscriber): Subscription
 
-	fun replaceReducer(reducer: Reducer<S, A>)
+	fun replaceReducer(reducer: Reducer<S>)
 
-	interface Creator<S : Any, A : Any> {
+	interface Creator<S : Any> {
 
-		fun create(reducer: Reducer<S, A>, initialState: S, enhancer: Enhancer<S, A>? = null): Store<S, A>
+		fun create(reducer: Reducer<S>, initialState: S, enhancer: Enhancer<S>? = null): Store<S>
 
 	}
 
-	interface Enhancer<S : Any, A : Any> {
+	interface Enhancer<S : Any> {
 
-		fun enhance(next: Creator<S, A>): Creator<S, A>
+		fun enhance(next: Creator<S>): Creator<S>
 
 	}
 
@@ -48,20 +48,20 @@ interface Store<S : Any, A : Any> : Dispatcher<A> {
 
 	}
 
-	private class Impl<S : Any, A : Any> : Store<S, A> {
+	private class Impl<S : Any> : Store<S> {
 
-		private var reducer: Reducer<S, A>
+		private var reducer: Reducer<S>
 		private var state: S
 		private var subscribers = mutableListOf<Subscriber>()
 
 		private var isDispatching = false
 
-		private constructor(reducer: Reducer<S, A>, state: S) {
+		private constructor(reducer: Reducer<S>, state: S) {
 			this.reducer = reducer
 			this.state = state
 		}
 
-		override fun dispatch(action: A): A {
+		override fun dispatch(action: Any): Any {
 			if (isDispatching) {
 				throw IllegalAccessError("Reducers may not dispatch actions.")
 			}
@@ -95,13 +95,13 @@ interface Store<S : Any, A : Any> : Dispatcher<A> {
 			}
 		}
 
-		override fun replaceReducer(reducer: Reducer<S, A>) {
+		override fun replaceReducer(reducer: Reducer<S>) {
 			this.reducer = reducer
 		}
 
-		class ImplCreator<S : Any, A : Any> : Creator<S, A> {
+		class ImplCreator<S : Any> : Creator<S> {
 
-			override fun create(reducer: Reducer<S, A>, initialState: S, enhancer: Enhancer<S, A>?): Store<S, A> {
+			override fun create(reducer: Reducer<S>, initialState: S, enhancer: Enhancer<S>?): Store<S> {
 				return Impl(reducer, initialState)
 			}
 
@@ -111,12 +111,14 @@ interface Store<S : Any, A : Any> : Dispatcher<A> {
 
 	companion object {
 
-		fun <S : Any, A : Any> create(
-				reducer: Reducer<S, A>,
-				initialState: S,
-				enhancer: Enhancer<S, A>? = null): Store<S, A> {
+		val INIT = Any()
 
-			val creator = Impl.ImplCreator<S, A>()
+		fun <S : Any> create(
+				reducer: Reducer<S>,
+				initialState: S,
+				enhancer: Enhancer<S>? = null): Store<S> {
+
+			val creator = Impl.ImplCreator<S>()
 			val store = if (enhancer != null) {
 				enhancer.enhance(creator).create(reducer, initialState)
 			}
@@ -124,7 +126,7 @@ interface Store<S : Any, A : Any> : Dispatcher<A> {
 				creator.create(reducer, initialState)
 			}
 
-			//store.dispatch(null)
+			store.dispatch(INIT)
 
 			return store
 		}

@@ -16,8 +16,8 @@ package redux
  * limitations under the License.
  */
 
-interface Dispatcher<A : Any> {
+interface Dispatcher {
 
-	fun dispatch(action: A): A
+	fun dispatch(action: Any): Any
 
 }

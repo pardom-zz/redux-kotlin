@@ -16,24 +16,24 @@ package redux
  * limitations under the License.
  */
 
-interface Middleware<S : Any, A : Any> {
+interface Middleware<S : Any> {
 
-	fun dispatch(store: Store<S, A>, action: A, next: Dispatcher<A>): A
+	fun dispatch(store: Store<S>, action: Any, next: Dispatcher): Any
 
-	private class Enhancer<S : Any, A : Any>(val middlewares: Array<out Middleware<S, A>>) : Store.Enhancer<S, A> {
+	private class Enhancer<S : Any>(val middlewares: Array<out Middleware<S>>) : Store.Enhancer<S> {
 
-		override fun enhance(next: Store.Creator<S, A>): Store.Creator<S, A> = Creator(next, middlewares)
+		override fun enhance(next: Store.Creator<S>): Store.Creator<S> = Creator(next, middlewares)
 
 	}
 
-	private class Creator<S : Any, A : Any>(
-			val creator: Store.Creator<S, A>,
-			val middlewares: Array<out Middleware<S, A>>) : Store.Creator<S, A> {
+	private class Creator<S : Any>(
+			val creator: Store.Creator<S>,
+			val middlewares: Array<out Middleware<S>>) : Store.Creator<S> {
 
 		override fun create(
-				reducer: Reducer<S, A>,
+				reducer: Reducer<S>,
 				initialState: S,
-				enhancer: Store.Enhancer<S, A>?): Store<S, A> {
+				enhancer: Store.Enhancer<S>?): Store<S> {
 
 			return Delegate(creator.create(reducer, initialState, enhancer), middlewares)
 
@@ -41,24 +41,24 @@ interface Middleware<S : Any, A : Any> {
 
 	}
 
-	private class Delegate<S : Any, A : Any>(
-			store: Store<S, A>,
-			middlewares: Array<out Middleware<S, A>>) : Store<S, A> by store {
+	private class Delegate<S : Any>(
+			store: Store<S>,
+			middlewares: Array<out Middleware<S>>) : Store<S> by store {
 
-		val rootDispatcher = middlewares.foldRight(store as Dispatcher<A>) { middleware, next ->
+		val rootDispatcher = middlewares.foldRight(store as Dispatcher) { middleware, next ->
 			Wrapper(middleware, store, next)
 		}
 
-		override fun dispatch(action: A): A {
+		override fun dispatch(action: Any): Any {
 			return rootDispatcher.dispatch(action)
 		}
 
-		class Wrapper<S : Any, A : Any>(
-				val middleware: Middleware<S, A>,
-				val store: Store<S, A>,
-				val next: Dispatcher<A>) : Dispatcher<A> {
+		class Wrapper<S : Any>(
+				val middleware: Middleware<S>,
+				val store: Store<S>,
+				val next: Dispatcher) : Dispatcher {
 
-			override fun dispatch(action: A): A {
+			override fun dispatch(action: Any): Any {
 				return middleware.dispatch(store, action, next)
 			}
 
@@ -68,7 +68,7 @@ interface Middleware<S : Any, A : Any> {
 
 	companion object {
 
-		fun <S : Any, A : Any> apply(vararg middlewares: Middleware<S, A>): Store.Enhancer<S, A> {
+		fun <S : Any> apply(vararg middlewares: Middleware<S>): Store.Enhancer<S> {
 			return Enhancer(middlewares)
 		}
 

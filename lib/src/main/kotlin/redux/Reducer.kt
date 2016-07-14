@@ -16,13 +16,13 @@ package redux
  * limitations under the License.
  */
 
-interface Reducer<S : Any, in A : Any> {
+interface Reducer<S : Any> {
 
-	fun reduce(state: S, action: A): S
+	fun reduce(state: S, action: Any): S
 
-	private class CombinedReducer<S : Any, in A : Any>(vararg val reducers: Reducer<S, A>) : Reducer<S, A> {
+	private class CombinedReducer<S : Any>(vararg val reducers: Reducer<S>) : Reducer<S> {
 
-		override fun reduce(state: S, action: A): S {
+		override fun reduce(state: S, action: Any): S {
 			return reducers.fold(state) { state, reducer -> reducer.reduce(state, action) }
 		}
 
@@ -30,7 +30,7 @@ interface Reducer<S : Any, in A : Any> {
 
 	companion object {
 
-		fun <S : Any, A : Any> combine(vararg reducers: Reducer<S, A>): Reducer<S, A> {
+		fun <S : Any> combine(vararg reducers: Reducer<S>): Reducer<S> {
 			return CombinedReducer(*reducers)
 		}
 
