@@ -20,3 +20,18 @@ dependencies {
 	testCompile 'org.jetbrains.spek:spek:1.0.+'
 	testCompile 'org.mockito:mockito-core:2.0.86-beta'
 }
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+	classifier = 'javadoc'
+	from javadoc.destinationDir
+}
+
+artifacts {
+	archives sourcesJar
+	archives javadocJar
+}
