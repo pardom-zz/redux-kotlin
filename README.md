@@ -1,10 +1,8 @@
 [![](https://jitpack.io/v/pardom/redux-kotlin.svg)](https://jitpack.io/#pardom/redux-kotlin)
 
-
-# Redux Kotlin
+# redux-otlin
 
 Redux for Kotlin
-
 
 Download
 --------
