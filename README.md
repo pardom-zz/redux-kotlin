@@ -1,6 +1,6 @@
 [![](https://jitpack.io/v/pardom/redux-kotlin.svg)](https://jitpack.io/#pardom/redux-kotlin)
 
-# redux-otlin
+# redux-kotlin
 
 Redux for Kotlin
 
