@@ -34,6 +34,10 @@ interface Reducer<S : Any> {
             return CombinedReducer(*reducers)
         }
 
+        operator fun <S : Any> invoke(f: (S, Any) -> S) = object : Reducer<S> {
+            override fun reduce(state: S, action: Any) = f(state, action)
+        }
+
     }
 
 }
