@@ -72,6 +72,10 @@ interface Middleware<S : Any> {
             return Enhancer(middlewares)
         }
 
+        operator fun <S : Any> invoke(f: (Store<S>, Any, Dispatcher) -> Any) = object : Middleware<S> {
+            override fun dispatch(store: Store<S>, action: Any, next: Dispatcher) = f(store, action, next)
+        }
+
     }
 
 }
