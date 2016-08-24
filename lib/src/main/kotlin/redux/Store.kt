@@ -43,13 +43,29 @@ interface Store<S : Any> : Dispatcher {
      * potentially have changed. You may then call [getState()] to read the current state tree inside the callback.
      *
      * @see <a href="http://redux.js.org/docs/api/Store.html#subscribe">http://redux.js.org/docs/api/Store.html#subscribe</a>
+     *
+     * @param[subscriber] The subscriber
+     * @return A subscription
      */
     fun subscribe(subscriber: Subscriber): Subscription
+
+    /**
+     * Adds a change listener. It will be called any time an action is dispatched, and some part of the state tree may
+     * potentially have changed. You may then call [getState()] to read the current state tree inside the callback.
+     *
+     * @see <a href="http://redux.js.org/docs/api/Store.html#subscribe">http://redux.js.org/docs/api/Store.html#subscribe</a>
+     *
+     * @param[subscriber] The subscriber function
+     * @return A subscription
+     */
+    fun subscribe(subscriber: () -> Unit) = subscribe(Subscriber(subscriber))
 
     /**
      * Replaces the reducer currently used by the store to calculate the state.
      *
      * @see <a href="http://redux.js.org/docs/api/Store.html#replaceReducer">http://redux.js.org/docs/api/Store.html#replaceReducer</a>
+     *
+     * @param[reducer] The reducer
      */
     fun replaceReducer(reducer: Reducer<S>)
 
