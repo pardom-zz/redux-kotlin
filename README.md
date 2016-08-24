@@ -3,7 +3,7 @@
 
 # Redux Kotlin
 
-Redux Kotlin is a predictable state container for Kotlin apps. It is a direct port of the original [Redux](http://redux.js.org/) library for JavaScript, which has excellent documentation at [http://redux.js.org/](http://redux.js.org/).
+Redux Kotlin is a predictable state container for Kotlin apps. It is a direct port of the original [Redux](https://github.com/reactjs/redux) library for JavaScript, which has excellent documentation at [http://redux.js.org/](http://redux.js.org/).
 
 ### The Gist
 
