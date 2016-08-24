@@ -215,6 +215,21 @@ class StoreTest : Spek({
                 verify(subscriberB, times(2)).onStateChanged()
             }
 
+            it("supports higher order function subscriptions") {
+                val store = Store.create(Reducers.TODOS, State())
+                var onStateChangedCalled = false
+
+                store.dispatch(unknownAction())
+                assert(!onStateChangedCalled)
+
+                val subscription = store.subscribe {
+                    onStateChangedCalled = true
+                }
+
+                store.dispatch(unknownAction())
+                assert(onStateChangedCalled)
+            }
+
             it("only removes listener once when unsubscribe is called") {
                 val store = Store.create(Reducers.TODOS, State())
                 val subscriberA = mock(Subscriber::class.java)
