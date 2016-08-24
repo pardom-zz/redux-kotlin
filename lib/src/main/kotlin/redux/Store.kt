@@ -153,7 +153,7 @@ interface Store<S : Any> : Dispatcher {
 
         override fun dispatch(action: Any): Any {
             if (isDispatching) {
-                throw IllegalAccessError("Reducers may not dispatch actions.")
+                //throw IllegalAccessError("Reducers may not dispatch actions.")
             }
 
             try {
