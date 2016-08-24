@@ -72,6 +72,14 @@ compile 'com.github.pardom:redux-kotlin:1.0.0'
 
 Snapshots of the development version are available the by using [`-SNAPSHOT`](https://jitpack.io/#pardom/redux-kotlin/-SNAPSHOT) as the version.
 
+### Middleware
+
+* [redux-logger-kotlin](https://github.com/pardom/redux-logger-kotlin) — Log every Redux action and the next state
+* [redux-observable-kotlin](https://github.com/pardom/redux-observable-kotlin) — RxJava middleware for action side effects using "Epics"
+* [redux-optimist-kotlin](https://github.com/pardom/redux-optimist-kotlin) — Reducer enhancer to enable optimistic updates
+* [redux-rxjava-kotlin](https://github.com/pardom/redux-rxjava-kotlin) — RxJava wrapper for store subscriptions
+* [redux-standard-action-kotlin](https://github.com/pardom/redux-standard-action-kotlin) — Flux Standard Action implementation
+
 ### License
 
      Copyright (C) 2016 Michael Pardo
