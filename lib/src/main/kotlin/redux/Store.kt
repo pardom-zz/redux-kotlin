@@ -16,34 +16,108 @@ package redux
  * limitations under the License.
  */
 
+/**
+ * Coordinates actions and [Reducers][Reducer]. Store has the following responsibilities:
+ * * Holds application state
+ * * Allows access to state via [getState()]
+ * * Allows state to be updated via [dispatch()]
+ * * Registers listeners via [subscribe()]
+ * * Handles unregistering of listeners via the [Subscriber] returned by [subscribe()]
+ *
+ * @see <a href="http://redux.js.org/docs/basics/Store.html">http://redux.js.org/docs/basics/Store.html</a>
+ */
 interface Store<S : Any> : Dispatcher {
 
+    /**
+     * Returns the current state tree of your application. It is equal to the last value returned by the store’s
+     * reducer.
+     *
+     * @see <a href="http://redux.js.org/docs/api/Store.html#getState">http://redux.js.org/docs/api/Store.html#getState</a>
+     *
+     * @return the current state
+     */
     fun getState(): S
 
+    /**
+     * Adds a change listener. It will be called any time an action is dispatched, and some part of the state tree may
+     * potentially have changed. You may then call [getState()] to read the current state tree inside the callback.
+     *
+     * @see <a href="http://redux.js.org/docs/api/Store.html#subscribe">http://redux.js.org/docs/api/Store.html#subscribe</a>
+     */
     fun subscribe(subscriber: Subscriber): Subscription
 
+    /**
+     * Replaces the reducer currently used by the store to calculate the state.
+     *
+     * @see <a href="http://redux.js.org/docs/api/Store.html#replaceReducer">http://redux.js.org/docs/api/Store.html#replaceReducer</a>
+     */
     fun replaceReducer(reducer: Reducer<S>)
 
+    /**
+     * An interface that creates a Redux store.
+     *
+     * @see <a href="http://redux.js.org/docs/Glossary.html#store-creator">http://redux.js.org/docs/Glossary.html#store-creator</a>
+     */
     interface Creator<S : Any> {
 
+        /**
+         *
+         */
         fun create(reducer: Reducer<S>, initialState: S, enhancer: Enhancer<S>? = null): Store<S>
 
     }
 
+    /**
+     * An interface that composes a store creator to return a new, enhanced store creator.
+     *
+     * @see <a href="http://redux.js.org/docs/Glossary.html#store-enhancer">http://redux.js.org/docs/Glossary.html#store-enhancer</a>
+     */
     interface Enhancer<S : Any> {
 
+        /**
+         *
+         */
         fun enhance(next: Creator<S>): Creator<S>
 
     }
 
+    /**
+     * A listener which will be called any time an action is dispatched, and some part of the state tree may potentially
+     * have changed. You may then call [getState()] to read the current state tree inside the listener.
+     *
+     * @see <a href="http://redux.js.org/docs/api/Store.html#subscribe">http://redux.js.org/docs/api/Store.html#subscribe</a>
+     */
     interface Subscriber {
 
+        /**
+         * Called any time an action is dispatched.
+         */
         fun onStateChanged()
+
+        companion object {
+
+            /**
+             * Creates a new [Subscriber] instance using the provided function as the [onStateChanged()] implementation.
+             *
+             * @param[f] A higher-order function equivalent to the [onStateChanged()] function
+             * @return A new subscriber instance
+             */
+            operator fun invoke(f: () -> Unit) = object : Subscriber {
+                override fun onStateChanged() = f()
+            }
+
+        }
 
     }
 
+    /**
+     * A reference to the [Subscriber] to allow for unsubscription.
+     */
     interface Subscription {
 
+        /**
+         * Unsubscribe the [Subscriber] from the [Store].
+         */
         fun unsubscribe()
 
     }
@@ -111,8 +185,23 @@ interface Store<S : Any> : Dispatcher {
 
     companion object {
 
+        /**
+         * When a store is created, an "INIT" action is dispatched so that every reducer returns their initial state.
+         * This effectively populates the initial state tree.
+         */
         val INIT = Any()
 
+        /**
+         * Creates a Redux store that holds the complete state tree of your component. There should only be a single
+         * store per component.
+         *
+         * @see <a href="http://redux.js.org/docs/api/createStore.html">http://redux.js.org/docs/api/createStore.html</a>
+         *
+         * @param[reducer] The [Reducer] which returns the next state tree, given the current state tree and an action to handle
+         * @param[initialState] The initial state
+         * @param[enhancer] The store [Enhancer]
+         * @return An object that holds the complete state of your component.
+         */
         fun <S : Any> create(
                 reducer: Reducer<S>,
                 initialState: S,
