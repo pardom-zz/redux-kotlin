@@ -41,7 +41,8 @@ val reducer = Reducer { state: Int, action: Any ->
 val store = Store.create(reducer, 0)
 
 // You can use subscribe() to update the UI in response to state changes.
-// Normally you'd use a view binding library (e.g. redux-rxjava-kotlin and RxBinding) rather than subscribe() directly.
+// Normally you'd use a view binding library (e.g. redux-rxjava-kotlin and RxBinding) rather
+// than subscribe() directly.
 store.subscribe {
 	println("${store.getState()}")
 }
