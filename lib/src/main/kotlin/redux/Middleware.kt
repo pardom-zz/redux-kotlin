@@ -16,8 +16,32 @@ package redux
  * limitations under the License.
  */
 
+/**
+ * Provides a third-party extension point between dispatching an action, and the moment it reaches the reducer.
+ *
+ * @see <a href="http://redux.js.org/docs/advanced/Middleware.html">http://redux.js.org/docs/advanced/Middleware.html</a>
+ */
 interface Middleware<S : Any> {
 
+    /**
+     * Apply middleware behavior to the dispatched action.
+     *
+     * ## Example
+     *
+     * ```kotlin
+     * Middleware { store: Store&lt;S&gt;, action: Any, next: Dispatcher ->
+     *     println("Previous state: $store")
+     *     val result = next.dispatch(action)
+     *     println("New state: $store")
+     *     result
+     * }
+     * ```
+     *
+     * @param[store] The previous state
+     * @param[action] A plain object describing the change that makes sense for your application
+     * @param[next] The next dispatcher to call
+     * @return The dispatched action
+     */
     fun dispatch(store: Store<S>, action: Any, next: Dispatcher): Any
 
     private class Enhancer<S : Any>(val middlewares: Array<out Middleware<S>>) : Store.Enhancer<S> {
@@ -68,10 +92,24 @@ interface Middleware<S : Any> {
 
     companion object {
 
+        /**
+         * Creates a Store [Enhancer] by applying one or more [Middleware].
+         *
+         * @see <a href="http://redux.js.org/docs/api/applyMiddleware.html">http://redux.js.org/docs/api/applyMiddleware.html</a>
+         *
+         * @param[middlewares] A list of middleware, applied in the order listed
+         * @return The middleware store enhancer
+         */
         fun <S : Any> apply(vararg middlewares: Middleware<S>): Store.Enhancer<S> {
             return Enhancer(middlewares)
         }
 
+        /**
+         * Creates a new [Middleware] instance using the provided function as the [dispatch()] implementation.
+         *
+         * @param[f] A higher-order function equivalent to the [dispatch()] function
+         * @return A new middleware instance
+         */
         operator fun <S : Any> invoke(f: (Store<S>, Any, Dispatcher) -> Any) = object : Middleware<S> {
             override fun dispatch(store: Store<S>, action: Any, next: Dispatcher) = f(store, action, next)
         }
