@@ -70,7 +70,7 @@ repositories {
 compile 'com.github.pardom:redux-kotlin:1.0.0'
 ```
 
-Snapshots of the development version are available the by using `-SNAPSHOT` as the version.
+Snapshots of the development version are available the by using [`-SNAPSHOT`](https://jitpack.io/#pardom/redux-kotlin/-SNAPSHOT) as the version.
 
 ### License
 
