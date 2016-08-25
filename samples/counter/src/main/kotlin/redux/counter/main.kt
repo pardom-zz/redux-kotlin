@@ -33,13 +33,11 @@ fun main(args: Array<String>) {
     document.getElementById("increment")
             ?.addEventListener("click", { event: Event ->
                 store.dispatch(INCREMENT)
-                kotlin.browser.window.alert("increment")
             })
 
     document.getElementById("decrement")
             ?.addEventListener("click", {
                 store.dispatch(DECREMENT)
-                kotlin.browser.window.alert("decrement")
             })
 
     document.getElementById("incrementIfOdd")
@@ -51,6 +49,8 @@ fun main(args: Array<String>) {
 
     document.getElementById("incrementAsync")
             ?.addEventListener("click", { event: Event ->
-                store.dispatch(INCREMENT)
+                kotlin.browser.window.setTimeout({
+                    store.dispatch(INCREMENT)
+                }, 1000)
             })
 }

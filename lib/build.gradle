@@ -41,8 +41,8 @@ jar {
 
     manifest {
         attributes(
-                "Specification-Title": "Kotlin JavaScript Lib",
-                "Kotlin-JS-Module-Name": "redux-kotlin"
+			"Specification-Title": "Redux Kotlin",
+			"Kotlin-JS-Module-Name": "redux-kotlin"
         )
     }
 }

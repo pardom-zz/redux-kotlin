@@ -2,7 +2,6 @@ apply plugin: "kotlin2js"
 
 repositories {
     mavenCentral()
-    maven { url "http://repository.jetbrains.com/all" }
     maven { url "http://jitpack.io" }
 }
 
