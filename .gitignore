@@ -1,8 +1,6 @@
 
 # Created by https://www.gitignore.io/api/android,intellij,eclipse,osx
 
-samples/**/js
-
 ### Android ###
 # Built application files
 *.apk
