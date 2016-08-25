@@ -1,6 +1,5 @@
 package redux.counter
 
-import org.w3c.dom.events.Event
 import redux.Reducer
 import redux.Store
 import redux.counter.Action.DECREMENT
@@ -31,7 +30,7 @@ fun main(args: Array<String>) {
     store.subscribe(render)
 
     document.getElementById("increment")
-            ?.addEventListener("click", { event: Event ->
+            ?.addEventListener("click", {
                 store.dispatch(INCREMENT)
             })
 
@@ -41,14 +40,14 @@ fun main(args: Array<String>) {
             })
 
     document.getElementById("incrementIfOdd")
-            ?.addEventListener("click", { event: Event ->
+            ?.addEventListener("click", {
                 if (store.getState() % 2 != 0) {
                     store.dispatch(INCREMENT)
                 }
             })
 
     document.getElementById("incrementAsync")
-            ?.addEventListener("click", { event: Event ->
+            ?.addEventListener("click", {
                 kotlin.browser.window.setTimeout({
                     store.dispatch(INCREMENT)
                 }, 1000)
