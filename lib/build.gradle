@@ -33,14 +33,14 @@ dependencies {
 
 compileKotlin2Js {
     kotlinOptions.sourceMap = true
-    kotlinOptions.outputFile = "${outDir}/${project.name}.js"
+    kotlinOptions.outputFile = "${outDir}/redux-kotlin.js"
     kotlinOptions.suppressWarnings = true
     kotlinOptions.verbose = true
 }
 
 compileTestKotlin2Js {
     kotlinOptions.sourceMap = true
-    kotlinOptions.outputFile = "${outDir}/${project.name}-test.js"
+    kotlinOptions.outputFile = "${outDir}/redux-kotlin-test.js"
     kotlinOptions.suppressWarnings = true
     kotlinOptions.verbose = true
 }
