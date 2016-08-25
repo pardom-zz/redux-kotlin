@@ -9,4 +9,4 @@ cache:
         - $HOME/.gradle/caches/
         - $HOME/.gradle/wrapper/
 
-script: ./gradlew check
+script: ./gradlew build -x compileTestKotlin2Js

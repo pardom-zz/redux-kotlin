@@ -153,7 +153,7 @@ interface Store<S : Any> : Dispatcher {
 
         override fun dispatch(action: Any): Any {
             if (isDispatching) {
-                throw IllegalAccessError("Reducers may not dispatch actions.")
+                //throw IllegalAccessError("Reducers may not dispatch actions.")
             }
 
             try {
@@ -205,7 +205,7 @@ interface Store<S : Any> : Dispatcher {
          * When a store is created, an "INIT" action is dispatched so that every reducer returns their initial state.
          * This effectively populates the initial state tree.
          */
-        val INIT = Any()
+        object INIT {}
 
         /**
          * Creates a Redux store that holds the complete state tree of your component. There should only be a single

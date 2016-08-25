@@ -1,0 +1,33 @@
+apply plugin: "kotlin2js"
+
+repositories {
+    mavenCentral()
+    maven { url "http://jitpack.io" }
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-js-library:$kotlin_version"
+    compile project(":lib")
+}
+
+compileKotlin2Js {
+    kotlinOptions.sourceMap = true
+    kotlinOptions.outputFile = "${projectDir}/web/js/app.js"
+    kotlinOptions.suppressWarnings = true
+    kotlinOptions.verbose = true
+}
+
+build.doLast {
+    configurations.compile.each { File file ->
+        copy {
+            includeEmptyDirs = false
+
+            from zipTree(file.absolutePath)
+            into "${projectDir}/web/js/lib"
+            include { fileTreeElement ->
+                def path = fileTreeElement.path
+                path.endsWith(".js") && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
+            }
+        }
+    }
+}
