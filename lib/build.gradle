@@ -32,13 +32,6 @@ compileKotlin2Js {
     kotlinOptions.verbose = true
 }
 
-compileTestKotlin2Js {
-    kotlinOptions.sourceMap = true
-    kotlinOptions.outputFile = "${outDir}/redux-kotlin-test.js"
-    kotlinOptions.suppressWarnings = true
-    kotlinOptions.verbose = true
-}
-
 jar {
     from sourceSets.main.allSource
     include "**/*.kt"
