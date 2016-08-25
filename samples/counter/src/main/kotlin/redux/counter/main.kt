@@ -42,7 +42,7 @@ fun main(args: Array<String>) {
 
     document.getElementById("incrementIfOdd")
             ?.addEventListener("click", { event: Event ->
-                if (store.getState() % 2 == 0) {
+                if (store.getState() % 2 != 0) {
                     store.dispatch(INCREMENT)
                 }
             })
