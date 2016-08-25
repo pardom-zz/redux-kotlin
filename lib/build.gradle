@@ -1,4 +1,3 @@
-apply plugin: 'java'
 apply plugin: 'kotlin'
 apply plugin: 'kotlin2js'
 
@@ -12,11 +11,6 @@ repositories {
 
 configurations {
 	ktlint
-}
-
-sourceSets {
-	main.kotlin.srcDirs += 'src/main/kotlin'
-	test.kotlin.srcDirs += 'src/test/kotlin'
 }
 
 dependencies {
