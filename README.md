@@ -72,6 +72,10 @@ compile 'com.github.pardom:redux-kotlin:1.0.0'
 
 Snapshots of the development version are available the by using [`-SNAPSHOT`](https://jitpack.io/#pardom/redux-kotlin/-SNAPSHOT) as the version.
 
+### Samples
+
+* [Counter](https://github.com/pardom/redux-kotlin/tree/master/samples/counter)
+
 ### Middleware
 
 * [redux-logger-kotlin](https://github.com/pardom/redux-logger-kotlin) — Log every Redux action and the next state
