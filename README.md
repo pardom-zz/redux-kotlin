@@ -75,6 +75,7 @@ Snapshots of the development version are available the by using [`-SNAPSHOT`](ht
 ### Samples
 
 * [Counter](https://github.com/pardom/redux-kotlin/tree/master/samples/counter)
+* [CleanNews](https://github.com/pardom/CleanNews)
 
 ### Middleware
 
