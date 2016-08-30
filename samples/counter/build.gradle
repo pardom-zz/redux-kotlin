@@ -17,6 +17,13 @@ compileKotlin2Js {
     kotlinOptions.verbose = true
 }
 
+compileTestKotlin2Js {
+    kotlinOptions.sourceMap = true
+    kotlinOptions.outputFile = "${projectDir}/web/js/app-test.js"
+    kotlinOptions.suppressWarnings = true
+    kotlinOptions.verbose = true
+}
+
 build.doLast {
     configurations.compile.each { File file ->
         copy {
