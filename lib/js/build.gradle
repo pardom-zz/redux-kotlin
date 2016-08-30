@@ -1,0 +1,60 @@
+apply plugin: 'kotlin2js'
+
+def outDir = "${buildDir}/js"
+
+repositories {
+	jcenter()
+	mavenCentral()
+	maven { url "http://repository.jetbrains.com/all" }
+}
+
+configurations {
+	ktlint
+}
+
+sourceSets {
+	main.kotlin.srcDirs += '../src/main/kotlin'
+}
+
+dependencies {
+	compile "org.jetbrains.kotlin:kotlin-js-library:$kotlin_version"
+}
+
+compileKotlin2Js {
+	kotlinOptions.sourceMap = true
+	kotlinOptions.outputFile = "${outDir}/redux-kotlin.js"
+	kotlinOptions.suppressWarnings = true
+	kotlinOptions.verbose = true
+}
+
+jar {
+	from sourceSets.main.allSource
+	include "**/*.kt"
+
+	from outDir
+	include "**/*.js"
+
+	manifest {
+		attributes(
+				"Specification-Title": "Redux Kotlin",
+				"Kotlin-JS-Module-Name": "redux-kotlin"
+		)
+	}
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+	classifier = 'javadoc'
+	from javadoc.destinationDir
+}
+
+artifacts {
+	archives sourcesJar
+	archives javadocJar
+}
+
+jar.dependsOn(compileKotlin2Js)
