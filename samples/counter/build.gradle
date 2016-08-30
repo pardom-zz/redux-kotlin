@@ -7,7 +7,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-js-library:$kotlin_version"
-    compile project(":lib")
+    compile project(":lib:js")
 }
 
 compileKotlin2Js {

@@ -59,8 +59,8 @@
         },
         main_kand9s$: function (args) {
           var tmp$0, tmp$1, tmp$2, tmp$3;
-          var reducer = Kotlin.modules['lib-js_main'].redux.Reducer.Companion.invoke_67q5p2$(_.redux.counter.main_kand9s$f);
-          var store = Kotlin.modules['lib-js_main'].redux.Store.Companion.create_wltvbw$(reducer, 0);
+          var reducer = Kotlin.modules['redux-kotlin'].redux.Reducer.Companion.invoke_67q5p2$(_.redux.counter.main_kand9s$f);
+          var store = Kotlin.modules['redux-kotlin'].redux.Store.Companion.create_wltvbw$(reducer, 0);
           var valueEl = document.getElementById('value');
           var render = _.redux.counter.main_kand9s$f_0(store, valueEl);
           render();
