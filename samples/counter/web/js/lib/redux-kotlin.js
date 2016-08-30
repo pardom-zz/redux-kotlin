@@ -2,7 +2,123 @@
   'use strict';
   var _ = Kotlin.defineRootPackage(null, /** @lends _ */ {
     redux: Kotlin.definePackage(null, /** @lends _.redux */ {
-      Dispatcher: Kotlin.createTrait(null),
+      Store: Kotlin.createTrait(function () {
+        return [_.redux.Dispatcher];
+      }, /** @lends _.redux.Store.prototype */ {
+        subscribe_qshda6$: function (subscriber) {
+          return this.subscribe_37p9pt$(_.redux.Store.Subscriber.Companion.invoke_qshda6$(subscriber));
+        }
+      }, /** @lends _.redux.Store */ {
+        Creator: Kotlin.createTrait(null),
+        Enhancer: Kotlin.createTrait(null),
+        Subscriber: Kotlin.createTrait(null, null, /** @lends _.redux.Store.Subscriber */ {
+          Companion: Kotlin.createObject(null, null, /** @lends _.redux.Store.Subscriber.Companion.prototype */ {
+            invoke_qshda6$: function (f) {
+              return new _.redux.Store.Subscriber.Companion.invoke$f(f);
+            }
+          }, /** @lends _.redux.Store.Subscriber.Companion */ {
+            invoke$f: Kotlin.createClass(function () {
+              return [_.redux.Store.Subscriber];
+            }, function (closure$f_0) {
+              this.closure$f_0 = closure$f_0;
+            }, /** @lends _.redux.Store.Subscriber.Companion.invoke$f.prototype */ {
+              onStateChanged: function () {
+                this.closure$f_0();
+              }
+            }, /** @lends _.redux.Store.Subscriber.Companion.invoke$f */ {
+            })
+          }),
+          object_initializer$: function () {
+            _.redux.Store.Subscriber.Companion;
+          }
+        }),
+        Subscription: Kotlin.createTrait(null),
+        Impl: Kotlin.createClass(function () {
+          return [_.redux.Store];
+        }, function () {
+          this.subscribers_v1nnl0$ = Kotlin.modules['stdlib'].kotlin.collections.mutableListOf_9mqe4v$([]);
+          this.isDispatching_tg7ekp$ = false;
+        }, /** @lends _.redux.Store.Impl.prototype */ {
+          dispatch_za3rmp$: function (action) {
+            if (this.isDispatching_tg7ekp$) {
+            }
+            try {
+              this.isDispatching_tg7ekp$ = true;
+              this.state_o4edue$ = this.reducer_nxftd1$.reduce_wn2jw4$(this.state_o4edue$, action);
+            }
+            finally {
+              this.isDispatching_tg7ekp$ = false;
+            }
+            var tmp$0;
+            tmp$0 = this.subscribers_v1nnl0$.iterator();
+            while (tmp$0.hasNext()) {
+              var element = tmp$0.next();
+              element.onStateChanged();
+            }
+            return action;
+          },
+          getState: function () {
+            return this.state_o4edue$;
+          },
+          subscribe_37p9pt$: function (subscriber) {
+            this.subscribers_v1nnl0$.add_za3rmp$(subscriber);
+            return new _.redux.Store.Impl.subscribe$f(this, subscriber);
+          },
+          replaceReducer_ey93rf$: function (reducer) {
+            this.reducer_nxftd1$ = reducer;
+          }
+        }, /** @lends _.redux.Store.Impl */ {
+          subscribe$f: Kotlin.createClass(function () {
+            return [_.redux.Store.Subscription];
+          }, function (this$Impl_0, closure$subscriber_0) {
+            this.this$Impl_0 = this$Impl_0;
+            this.closure$subscriber_0 = closure$subscriber_0;
+          }, /** @lends _.redux.Store.Impl.subscribe$f.prototype */ {
+            unsubscribe: function () {
+              this.this$Impl_0.subscribers_v1nnl0$.remove_za3rmp$(this.closure$subscriber_0);
+            }
+          }, /** @lends _.redux.Store.Impl.subscribe$f */ {
+          }),
+          ImplCreator: Kotlin.createClass(function () {
+            return [_.redux.Store.Creator];
+          }, null, /** @lends _.redux.Store.Impl.ImplCreator.prototype */ {
+            create_wltvbw$: function (reducer, initialState, enhancer) {
+              if (enhancer === void 0)
+                enhancer = null;
+              return _.redux.Store.Impl_init_1(reducer, initialState);
+            }
+          })
+        }),
+        Impl_init_1: function (reducer, state, $this) {
+          $this = $this || Object.create(_.redux.Store.Impl.prototype);
+          _.redux.Store.Impl.call($this);
+          $this.reducer_nxftd1$ = reducer;
+          $this.state_o4edue$ = state;
+          return $this;
+        },
+        Companion: Kotlin.createObject(null, null, /** @lends _.redux.Store.Companion.prototype */ {
+          create_wltvbw$: function (reducer, initialState, enhancer) {
+            var tmp$0;
+            if (enhancer === void 0)
+              enhancer = null;
+            var creator = new _.redux.Store.Impl.ImplCreator();
+            if (enhancer != null) {
+              tmp$0 = enhancer.enhance_rg6n14$(creator).create_wltvbw$(reducer, initialState);
+            }
+             else {
+              tmp$0 = creator.create_wltvbw$(reducer, initialState);
+            }
+            var store = tmp$0;
+            store.dispatch_za3rmp$(_.redux.Store.Companion.INIT);
+            return store;
+          }
+        }, /** @lends _.redux.Store.Companion */ {
+          INIT: Kotlin.createObject(null, null)
+        }),
+        object_initializer$: function () {
+          _.redux.Store.Companion;
+        }
+      }),
       Middleware: Kotlin.createTrait(null, null, /** @lends _.redux.Middleware */ {
         Enhancer: Kotlin.createClass(function () {
           return [_.redux.Store.Enhancer];
@@ -129,123 +245,7 @@
           _.redux.Reducer.Companion;
         }
       }),
-      Store: Kotlin.createTrait(function () {
-        return [_.redux.Dispatcher];
-      }, /** @lends _.redux.Store.prototype */ {
-        subscribe_qshda6$: function (subscriber) {
-          return this.subscribe_37p9pt$(_.redux.Store.Subscriber.Companion.invoke_qshda6$(subscriber));
-        }
-      }, /** @lends _.redux.Store */ {
-        Creator: Kotlin.createTrait(null),
-        Enhancer: Kotlin.createTrait(null),
-        Subscriber: Kotlin.createTrait(null, null, /** @lends _.redux.Store.Subscriber */ {
-          Companion: Kotlin.createObject(null, null, /** @lends _.redux.Store.Subscriber.Companion.prototype */ {
-            invoke_qshda6$: function (f) {
-              return new _.redux.Store.Subscriber.Companion.invoke$f(f);
-            }
-          }, /** @lends _.redux.Store.Subscriber.Companion */ {
-            invoke$f: Kotlin.createClass(function () {
-              return [_.redux.Store.Subscriber];
-            }, function (closure$f_0) {
-              this.closure$f_0 = closure$f_0;
-            }, /** @lends _.redux.Store.Subscriber.Companion.invoke$f.prototype */ {
-              onStateChanged: function () {
-                this.closure$f_0();
-              }
-            }, /** @lends _.redux.Store.Subscriber.Companion.invoke$f */ {
-            })
-          }),
-          object_initializer$: function () {
-            _.redux.Store.Subscriber.Companion;
-          }
-        }),
-        Subscription: Kotlin.createTrait(null),
-        Impl: Kotlin.createClass(function () {
-          return [_.redux.Store];
-        }, function () {
-          this.subscribers_v1nnl0$ = Kotlin.modules['stdlib'].kotlin.collections.mutableListOf_9mqe4v$([]);
-          this.isDispatching_tg7ekp$ = false;
-        }, /** @lends _.redux.Store.Impl.prototype */ {
-          dispatch_za3rmp$: function (action) {
-            if (this.isDispatching_tg7ekp$) {
-            }
-            try {
-              this.isDispatching_tg7ekp$ = true;
-              this.state_o4edue$ = this.reducer_nxftd1$.reduce_wn2jw4$(this.state_o4edue$, action);
-            }
-            finally {
-              this.isDispatching_tg7ekp$ = false;
-            }
-            var tmp$0;
-            tmp$0 = this.subscribers_v1nnl0$.iterator();
-            while (tmp$0.hasNext()) {
-              var element = tmp$0.next();
-              element.onStateChanged();
-            }
-            return action;
-          },
-          getState: function () {
-            return this.state_o4edue$;
-          },
-          subscribe_37p9pt$: function (subscriber) {
-            this.subscribers_v1nnl0$.add_za3rmp$(subscriber);
-            return new _.redux.Store.Impl.subscribe$f(this, subscriber);
-          },
-          replaceReducer_ey93rf$: function (reducer) {
-            this.reducer_nxftd1$ = reducer;
-          }
-        }, /** @lends _.redux.Store.Impl */ {
-          subscribe$f: Kotlin.createClass(function () {
-            return [_.redux.Store.Subscription];
-          }, function (this$Impl_0, closure$subscriber_0) {
-            this.this$Impl_0 = this$Impl_0;
-            this.closure$subscriber_0 = closure$subscriber_0;
-          }, /** @lends _.redux.Store.Impl.subscribe$f.prototype */ {
-            unsubscribe: function () {
-              this.this$Impl_0.subscribers_v1nnl0$.remove_za3rmp$(this.closure$subscriber_0);
-            }
-          }, /** @lends _.redux.Store.Impl.subscribe$f */ {
-          }),
-          ImplCreator: Kotlin.createClass(function () {
-            return [_.redux.Store.Creator];
-          }, null, /** @lends _.redux.Store.Impl.ImplCreator.prototype */ {
-            create_wltvbw$: function (reducer, initialState, enhancer) {
-              if (enhancer === void 0)
-                enhancer = null;
-              return _.redux.Store.Impl_init_1(reducer, initialState);
-            }
-          })
-        }),
-        Impl_init_1: function (reducer, state, $this) {
-          $this = $this || Object.create(_.redux.Store.Impl.prototype);
-          _.redux.Store.Impl.call($this);
-          $this.reducer_nxftd1$ = reducer;
-          $this.state_o4edue$ = state;
-          return $this;
-        },
-        Companion: Kotlin.createObject(null, null, /** @lends _.redux.Store.Companion.prototype */ {
-          create_wltvbw$: function (reducer, initialState, enhancer) {
-            var tmp$0;
-            if (enhancer === void 0)
-              enhancer = null;
-            var creator = new _.redux.Store.Impl.ImplCreator();
-            if (enhancer != null) {
-              tmp$0 = enhancer.enhance_rg6n14$(creator).create_wltvbw$(reducer, initialState);
-            }
-             else {
-              tmp$0 = creator.create_wltvbw$(reducer, initialState);
-            }
-            var store = tmp$0;
-            store.dispatch_za3rmp$(_.redux.Store.Companion.INIT);
-            return store;
-          }
-        }, /** @lends _.redux.Store.Companion */ {
-          INIT: Kotlin.createObject(null, null)
-        }),
-        object_initializer$: function () {
-          _.redux.Store.Companion;
-        }
-      })
+      Dispatcher: Kotlin.createTrait(null)
     })
   });
   Kotlin.defineModule('redux-kotlin', _);

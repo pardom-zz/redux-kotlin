@@ -67,7 +67,11 @@ repositories {
 ```
 
 ```groovy
+// JVM/Android
 compile 'com.github.pardom.redux-kotlin:lib:1.0.1'
+
+// JavaScript
+compile 'com.github.pardom.redux-kotlin:js:1.0.1'
 ```
 
 Snapshots of the development version are available the by using [`-SNAPSHOT`](https://jitpack.io/#pardom/redux-kotlin/-SNAPSHOT) as the version.
