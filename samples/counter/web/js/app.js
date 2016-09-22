@@ -1,12 +1,12 @@
-(function (Kotlin) {
+var app = function (Kotlin, $module$redux_kotlin) {
   'use strict';
   var _ = Kotlin.defineRootPackage(null, /** @lends _ */ {
     redux: Kotlin.definePackage(null, /** @lends _.redux */ {
       counter: Kotlin.definePackage(null, /** @lends _.redux.counter */ {
         Action: Kotlin.createEnumClass(function () {
           return [Kotlin.Enum];
-        }, function $fun() {
-          $fun.baseInitializer.call(this);
+        }, function Action() {
+          Action.baseInitializer.call(this);
         }, function () {
           return {
             INCREMENT: function () {
@@ -59,8 +59,8 @@
         },
         main_kand9s$: function (args) {
           var tmp$0, tmp$1, tmp$2, tmp$3;
-          var reducer = Kotlin.modules['redux-kotlin'].redux.Reducer.Companion.invoke_67q5p2$(_.redux.counter.main_kand9s$f);
-          var store = Kotlin.modules['redux-kotlin'].redux.Store.Companion.create_wltvbw$(reducer, 0);
+          var reducer = $module$redux_kotlin.redux.Reducer.Companion.invoke_67q5p2$(_.redux.counter.main_kand9s$f);
+          var store = $module$redux_kotlin.redux.Store.Companion.create_wltvbw$(reducer, 0);
           var valueEl = document.getElementById('value');
           var render = _.redux.counter.main_kand9s$f_0(store, valueEl);
           render();
@@ -75,6 +75,7 @@
   });
   Kotlin.defineModule('app', _);
   _.redux.counter.main_kand9s$([]);
-}(Kotlin));
+  return _;
+}(kotlin, this['redux-kotlin']);
 
 //@ sourceMappingURL=app.js.map

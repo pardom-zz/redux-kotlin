@@ -1,4 +1,4 @@
-(function (Kotlin) {
+this['redux-kotlin'] = function (Kotlin) {
   'use strict';
   var _ = Kotlin.defineRootPackage(null, /** @lends _ */ {
     redux: Kotlin.definePackage(null, /** @lends _.redux */ {
@@ -6,7 +6,7 @@
       Middleware: Kotlin.createTrait(null, null, /** @lends _.redux.Middleware */ {
         Enhancer: Kotlin.createClass(function () {
           return [_.redux.Store.Enhancer];
-        }, function (middlewares) {
+        }, function Enhancer(middlewares) {
           this.middlewares = middlewares;
         }, /** @lends _.redux.Middleware.Enhancer.prototype */ {
           enhance_rg6n14$: function (next) {
@@ -15,7 +15,7 @@
         }),
         Creator: Kotlin.createClass(function () {
           return [_.redux.Store.Creator];
-        }, function (creator, middlewares) {
+        }, function Creator(creator, middlewares) {
           this.creator = creator;
           this.middlewares = middlewares;
         }, /** @lends _.redux.Middleware.Creator.prototype */ {
@@ -27,10 +27,9 @@
         }),
         Delegate: Kotlin.createClass(function () {
           return [_.redux.Store];
-        }, function (store, middlewares) {
-          var tmp$0;
+        }, function Delegate(store, middlewares) {
           this.$delegate_evpjd8$ = store;
-          var index = Kotlin.modules['stdlib'].kotlin.collections.get_lastIndex_eg9ybj$(middlewares);
+          var index = Kotlin.kotlin.collections.get_lastIndex_eg9ybj$(middlewares);
           var accumulator = store;
           while (index >= 0) {
             accumulator = new _.redux.Middleware.Delegate.Wrapper(middlewares[index--], store, accumulator);
@@ -55,7 +54,7 @@
         }, /** @lends _.redux.Middleware.Delegate */ {
           Wrapper: Kotlin.createClass(function () {
             return [_.redux.Dispatcher];
-          }, function (middleware, store, next) {
+          }, function Wrapper(middleware, store, next) {
             this.middleware = middleware;
             this.store = store;
             this.next = next;
@@ -65,7 +64,8 @@
             }
           })
         }),
-        Companion: Kotlin.createObject(null, null, /** @lends _.redux.Middleware.Companion.prototype */ {
+        Companion: Kotlin.createObject(null, function Companion() {
+        }, /** @lends _.redux.Middleware.Companion.prototype */ {
           apply_oiu21q$: function (middlewares) {
             return new _.redux.Middleware.Enhancer(middlewares);
           },
@@ -91,22 +91,23 @@
       Reducer: Kotlin.createTrait(null, null, /** @lends _.redux.Reducer */ {
         CombinedReducer: Kotlin.createClass(function () {
           return [_.redux.Reducer];
-        }, function (reducers) {
+        }, function CombinedReducer(reducers) {
           this.reducers = reducers;
         }, /** @lends _.redux.Reducer.CombinedReducer.prototype */ {
           reduce_wn2jw4$: function (state, action) {
-            var tmp$0, tmp$1, tmp$2;
+            var $receiver = this.reducers;
+            var tmp$2;
             var accumulator = state;
-            tmp$0 = this.reducers, tmp$1 = tmp$0.length;
-            for (var tmp$2 = 0; tmp$2 !== tmp$1; ++tmp$2) {
-              var element = tmp$0[tmp$2];
+            for (tmp$2 = 0; tmp$2 !== $receiver.length; ++tmp$2) {
+              var element = $receiver[tmp$2];
               accumulator = element.reduce_wn2jw4$(accumulator, action);
             }
             return accumulator;
           }
         }, /** @lends _.redux.Reducer.CombinedReducer */ {
         }),
-        Companion: Kotlin.createObject(null, null, /** @lends _.redux.Reducer.Companion.prototype */ {
+        Companion: Kotlin.createObject(null, function Companion() {
+        }, /** @lends _.redux.Reducer.Companion.prototype */ {
           combine_q28sxo$: function (reducers) {
             return new _.redux.Reducer.CombinedReducer(reducers.slice());
           },
@@ -139,7 +140,8 @@
         Creator: Kotlin.createTrait(null),
         Enhancer: Kotlin.createTrait(null),
         Subscriber: Kotlin.createTrait(null, null, /** @lends _.redux.Store.Subscriber */ {
-          Companion: Kotlin.createObject(null, null, /** @lends _.redux.Store.Subscriber.Companion.prototype */ {
+          Companion: Kotlin.createObject(null, function Companion() {
+          }, /** @lends _.redux.Store.Subscriber.Companion.prototype */ {
             invoke_qshda6$: function (f) {
               return new _.redux.Store.Subscriber.Companion.invoke$f(f);
             }
@@ -162,8 +164,8 @@
         Subscription: Kotlin.createTrait(null),
         Impl: Kotlin.createClass(function () {
           return [_.redux.Store];
-        }, function () {
-          this.subscribers_v1nnl0$ = Kotlin.modules['stdlib'].kotlin.collections.mutableListOf_9mqe4v$([]);
+        }, function Impl() {
+          this.subscribers_v1nnl0$ = Kotlin.kotlin.collections.mutableListOf_9mqe4v$([]);
           this.isDispatching_tg7ekp$ = false;
         }, /** @lends _.redux.Store.Impl.prototype */ {
           dispatch_za3rmp$: function (action) {
@@ -208,7 +210,8 @@
           }),
           ImplCreator: Kotlin.createClass(function () {
             return [_.redux.Store.Creator];
-          }, null, /** @lends _.redux.Store.Impl.ImplCreator.prototype */ {
+          }, function ImplCreator() {
+          }, /** @lends _.redux.Store.Impl.ImplCreator.prototype */ {
             create_wltvbw$: function (reducer, initialState, enhancer) {
               if (enhancer === void 0)
                 enhancer = null;
@@ -223,24 +226,25 @@
           $this.state_o4edue$ = state;
           return $this;
         },
-        Companion: Kotlin.createObject(null, null, /** @lends _.redux.Store.Companion.prototype */ {
+        Companion: Kotlin.createObject(null, function Companion() {
+        }, /** @lends _.redux.Store.Companion.prototype */ {
           create_wltvbw$: function (reducer, initialState, enhancer) {
-            var tmp$0;
+            var store;
             if (enhancer === void 0)
               enhancer = null;
             var creator = new _.redux.Store.Impl.ImplCreator();
             if (enhancer != null) {
-              tmp$0 = enhancer.enhance_rg6n14$(creator).create_wltvbw$(reducer, initialState);
+              store = enhancer.enhance_rg6n14$(creator).create_wltvbw$(reducer, initialState);
             }
              else {
-              tmp$0 = creator.create_wltvbw$(reducer, initialState);
+              store = creator.create_wltvbw$(reducer, initialState);
             }
-            var store = tmp$0;
             store.dispatch_za3rmp$(_.redux.Store.Companion.INIT);
             return store;
           }
         }, /** @lends _.redux.Store.Companion */ {
-          INIT: Kotlin.createObject(null, null)
+          INIT: Kotlin.createObject(null, function INIT() {
+          })
         }),
         object_initializer$: function () {
           _.redux.Store.Companion;
@@ -249,6 +253,7 @@
     })
   });
   Kotlin.defineModule('redux-kotlin', _);
-}(Kotlin));
+  return _;
+}(kotlin);
 
 //@ sourceMappingURL=redux-kotlin.js.map
