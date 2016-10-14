@@ -187,6 +187,7 @@ interface Store<S : Any> : Dispatcher {
 
         override fun replaceReducer(reducer: Reducer<S>) {
             this.reducer = reducer
+            dispatch(INIT)
         }
 
         class ImplCreator<S : Any> : Creator<S> {
