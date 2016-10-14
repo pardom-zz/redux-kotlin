@@ -79,7 +79,7 @@ interface Store<S : Any> : Dispatcher {
         /**
          *
          */
-        fun create(reducer: Reducer<S>, initialState: S, enhancer: Enhancer<S>? = null): Store<S>
+        fun create(reducer: Reducer<S>, initialState: S): Store<S>
 
     }
 
@@ -191,7 +191,7 @@ interface Store<S : Any> : Dispatcher {
 
         class ImplCreator<S : Any> : Creator<S> {
 
-            override fun create(reducer: Reducer<S>, initialState: S, enhancer: Enhancer<S>?): Store<S> {
+            override fun create(reducer: Reducer<S>, initialState: S): Store<S> {
                 return Impl(reducer, initialState)
             }
 
