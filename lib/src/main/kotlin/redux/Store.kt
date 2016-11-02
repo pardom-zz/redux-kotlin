@@ -23,7 +23,6 @@ import redux.api.Store.Subscription
  * limitations under the License.
  */
 
-
 /**
  * When a store is created, an "INIT" action is dispatched so that every reducer returns their initial state.
  * This effectively populates the initial state tree.
