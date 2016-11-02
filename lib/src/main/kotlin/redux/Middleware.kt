@@ -1,5 +1,9 @@
 package redux
 
+import redux.api.Dispatcher
+import redux.api.Reducer
+import redux.api.Store
+
 /*
  * Copyright (C) 2016 Michael Pardo
  *

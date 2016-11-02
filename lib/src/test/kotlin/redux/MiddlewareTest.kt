@@ -1,6 +1,8 @@
 package redux
 
 import org.jetbrains.spek.api.Spek
+import redux.api.Dispatcher
+import redux.api.Store
 import redux.helpers.Reducers
 import redux.helpers.Todos.Action.AddTodo
 import redux.helpers.Todos.State
@@ -39,7 +41,7 @@ class MiddlewareTest : Spek({
                 }
 
                 val initialState = State(listOf(Todo(1, "Hello")))
-                val store = Store.create(Reducers.TODOS, initialState, Middleware.apply(middleware))
+                val store = createStore(Reducers.TODOS, initialState, Middleware.apply(middleware))
 
                 assertEquals(1, dispatches)
 

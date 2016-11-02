@@ -1,7 +1,8 @@
 package redux.helpers
 
-import redux.Reducer
+import redux.api.Reducer
 import redux.helpers.Todos.Action
+import redux.helpers.Todos.Action.AddTodo
 import redux.helpers.Todos.State
 import redux.helpers.Todos.Todo
 
@@ -31,7 +32,7 @@ object Reducers {
 
     val TODOS = Reducer { state: State, action: Any ->
         when (action) {
-            is Action.AddTodo -> state.copy(todos = state.todos + Todo(id(state), action.todo))
+            is AddTodo -> state.copy(todos = state.todos + Todo(id(state), action.todo))
             else -> state
         }
     }

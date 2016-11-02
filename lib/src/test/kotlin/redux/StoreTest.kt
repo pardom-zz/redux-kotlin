@@ -4,7 +4,7 @@ import org.jetbrains.spek.api.Spek
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
-import redux.Store.Subscriber
+import redux.api.Store.Subscriber
 import redux.helpers.ActionCreators.addTodo
 import redux.helpers.ActionCreators.unknownAction
 import redux.helpers.Reducers
@@ -36,7 +36,7 @@ class StoreTest : Spek({
         describe("create") {
 
             it("passes the initial action and the initial state") {
-                val store = Store.create(Reducers.TODOS, State(
+                val store = createStore(Reducers.TODOS, State(
                         listOf(
                                 Todo(1, "Hello")
                         )
@@ -51,7 +51,7 @@ class StoreTest : Spek({
             }
 
             it("applies the reducer to the previous state") {
-                val store = Store.create(Reducers.TODOS, State())
+                val store = createStore(Reducers.TODOS, State())
                 expect(store.getState()) { Todos.State() }
 
                 store.dispatch(unknownAction())
@@ -78,7 +78,7 @@ class StoreTest : Spek({
             }
 
             it("applies the reducer to the initial state") {
-                val store = Store.create(Reducers.TODOS, State(
+                val store = createStore(Reducers.TODOS, State(
                         listOf(
                                 Todo(1, "Hello")
                         )
@@ -113,7 +113,7 @@ class StoreTest : Spek({
             }
 
             it("preserves the state when replacing a reducer") {
-                val store = Store.create(Reducers.TODOS, State())
+                val store = createStore(Reducers.TODOS, State())
                 store.dispatch(addTodo("Hello"))
                 store.dispatch(addTodo("World"))
                 expect(store.getState()) {
@@ -172,7 +172,7 @@ class StoreTest : Spek({
             }
 
             it("supports multiple subscriptions") {
-                val store = Store.create(Reducers.TODOS, State())
+                val store = createStore(Reducers.TODOS, State())
                 val subscriberA = mock(Subscriber::class.java)
                 val subscriberB = mock(Subscriber::class.java)
 
@@ -216,7 +216,7 @@ class StoreTest : Spek({
             }
 
             it("supports higher order function subscriptions") {
-                val store = Store.create(Reducers.TODOS, State())
+                val store = createStore(Reducers.TODOS, State())
                 var onStateChangedCalled = false
 
                 store.dispatch(unknownAction())
@@ -231,7 +231,7 @@ class StoreTest : Spek({
             }
 
             it("only removes listener once when unsubscribe is called") {
-                val store = Store.create(Reducers.TODOS, State())
+                val store = createStore(Reducers.TODOS, State())
                 val subscriberA = mock(Subscriber::class.java)
                 val subscriberB = mock(Subscriber::class.java)
 
