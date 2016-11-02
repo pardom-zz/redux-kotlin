@@ -27,94 +27,108 @@ import redux.api.Store
  */
 interface Middleware<S : Any> {
 
-	/**
-	 * Apply middleware behavior to the dispatched action.
-	 *
-	 * ## Example
-	 *
-	 * ```kotlin
-	 * Middleware { store: Store&lt;S&gt;, action: Any, next: Dispatcher ->
-	 *     println("Previous state: $store")
-	 *     val result = next.dispatch(action)
-	 *     println("New state: $store")
-	 *     result
-	 * }
-	 * ```
-	 *
-	 * @param[store] The previous state
-	 * @param[action] A plain object describing the change that makes sense for your application
-	 * @param[next] The next dispatcher to call
-	 * @return The dispatched action
-	 */
-	fun dispatch(store: Store<S>, action: Any, next: Dispatcher): Any
+    /**
+     * Apply middleware behavior to the dispatched action.
+     *
+     * ## Example
+     *
+     * ```kotlin
+     * Middleware { store: Store&lt;S&gt;, action: Any, next: Dispatcher ->
+     *     println("Previous state: $store")
+     *     val result = next.dispatch(action)
+     *     println("New state: $store")
+     *     result
+     * }
+     * ```
+     *
+     * @param[store] The previous state
+     * @param[action] A plain object describing the change that makes sense for your application
+     * @param[next] The next dispatcher to call
+     * @return The dispatched action
+     */
+    fun dispatch(stateProvider: StateProvider<S>, action: Any, next: Dispatcher): Any
 
-	private class Enhancer<S : Any>(val middlewares: Array<out Middleware<S>>) : Store.Enhancer<S> {
+    interface StateProvider<S : Any> {
 
-		override fun enhance(next: Store.Creator<S>): Store.Creator<S> = Creator(next, middlewares)
+        fun getState(): S
 
-	}
+    }
 
-	private class Creator<S : Any>(
-			val creator: Store.Creator<S>,
-			val middlewares: Array<out Middleware<S>>) : Store.Creator<S> {
+    private class Enhancer<S : Any>(val middlewares: Array<out Middleware<S>>) : Store.Enhancer<S> {
 
-		override fun create(reducer: Reducer<S>, initialState: S): Store<S> {
+        override fun enhance(next: Store.Creator<S>): Store.Creator<S> = Creator(next, middlewares)
 
-			return Delegate(creator.create(reducer, initialState), middlewares)
+    }
 
-		}
+    private class Creator<S : Any>(
+        val creator: Store.Creator<S>,
+        val middlewares: Array<out Middleware<S>>) : Store.Creator<S> {
 
-	}
+        override fun create(reducer: Reducer<S>, initialState: S): Store<S> {
 
-	private class Delegate<S : Any>(
-			store: Store<S>,
-			middlewares: Array<out Middleware<S>>) : Store<S> by store {
+            return Delegate(creator.create(reducer, initialState), middlewares)
 
-		val rootDispatcher = middlewares.foldRight(store as Dispatcher) { middleware, next ->
-			Wrapper(middleware, store, next)
-		}
+        }
 
-		override fun dispatch(action: Any): Any {
-			return rootDispatcher.dispatch(action)
-		}
+    }
 
-		class Wrapper<S : Any>(
-				val middleware: Middleware<S>,
-				val store: Store<S>,
-				val next: Dispatcher) : Dispatcher {
+    private class Delegate<S : Any>(
+        store: Store<S>,
+        middlewares: Array<out Middleware<S>>) : Store<S> by store {
 
-			override fun dispatch(action: Any): Any {
-				return middleware.dispatch(store, action, next)
-			}
+        val rootDispatcher = middlewares.foldRight(store as Dispatcher) { middleware, next ->
+            Wrapper(middleware, store, next)
+        }
 
-		}
+        override fun dispatch(action: Any): Any {
+            return rootDispatcher.dispatch(action)
+        }
 
-	}
+        class Wrapper<S : Any>(
+            val middleware: Middleware<S>,
+            val store: Store<S>,
+            val next: Dispatcher) : Dispatcher {
 
-	companion object {
+            override fun dispatch(action: Any): Any {
+                val stateProvider = object : StateProvider<S> {
+                    override fun getState() = store.state
+                }
+                return middleware.dispatch(stateProvider, action, next)
+            }
 
-		/**
-		 * Creates a Store [Enhancer] by applying one or more [Middleware].
-		 *
-		 * @see <a href="http://redux.js.org/docs/api/applyMiddleware.html">http://redux.js.org/docs/api/applyMiddleware.html</a>
-		 *
-		 * @param[middlewares] A list of middleware, applied in the order listed
-		 * @return The middleware store enhancer
-		 */
-		fun <S : Any> apply(vararg middlewares: Middleware<S>): Store.Enhancer<S> {
-			return Enhancer(middlewares)
-		}
+        }
 
-		/**
-		 * Creates a new [Middleware] instance using the provided function as the [dispatch()] implementation.
-		 *
-		 * @param[f] A higher-order function equivalent to the [dispatch()] function
-		 * @return A new middleware instance
-		 */
-		operator fun <S : Any> invoke(f: (Store<S>, Any, Dispatcher) -> Any) = object : Middleware<S> {
-			override fun dispatch(store: Store<S>, action: Any, next: Dispatcher) = f(store, action, next)
-		}
+    }
 
-	}
+    companion object {
+
+        /**
+         * Creates a Store [Enhancer] by applying one or more [Middleware].
+         *
+         * @see <a href="http://redux.js.org/docs/api/applyMiddleware.html">http://redux.js.org/docs/api/applyMiddleware.html</a>
+         *
+         * @param[middlewares] A list of middleware, applied in the order listed
+         * @return The middleware store enhancer
+         */
+        fun <S : Any> apply(vararg middlewares: Middleware<S>): Store.Enhancer<S> {
+            return Enhancer(middlewares)
+        }
+
+        /**
+         * Creates a new [Middleware] instance using the provided function as the [dispatch()] implementation.
+         *
+         * @param[f] A higher-order function equivalent to the [dispatch()] function
+         * @return A new middleware instance
+         */
+        operator fun <S : Any> invoke(
+            f: (StateProvider<S>, Any, Dispatcher) -> Any) = object : Middleware<S> {
+
+            override fun dispatch(stateProvider: StateProvider<S>, action: Any,
+                next: Dispatcher): Any {
+                return f(stateProvider, action, next)
+            }
+        }
+
+    }
 
 }
