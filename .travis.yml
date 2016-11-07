@@ -10,6 +10,6 @@ before_cache:
 cache:
   directories:
     - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
+    re- $HOME/.gradle/wrapper/
 
 script: ./gradlew build

@@ -9,8 +9,8 @@ Redux Kotlin is a predictable state container for Kotlin apps. It is a direct po
 
 (Adapted from: https://github.com/reactjs/redux/#the-gist)
 
-The whole state of your app is stored in an object tree inside a single *store*.  
-The only way to change the state tree is to emit an *action*, an object describing what happened.  
+The whole state of your app is stored in an object tree inside a single *store*.
+The only way to change the state tree is to emit an *action*, an object describing what happened.
 To specify how the actions transform the state tree, you write pure *reducers*.
 
 That's it!
@@ -20,8 +20,8 @@ That's it!
  * This is a reducer, a pure function with (state, action) -> state signature.
  * It describes how an action transforms the state into the next state.
  *
- * The shape of the state is up to you: it can be a primitive, an array, or even an object. 
- * The only important part is that you should not mutate the state object, but return a 
+ * The shape of the state is up to you: it can be a primitive, an array, or even an object.
+ * The only important part is that you should not mutate the state object, but return a
  * new object if the state changes.
  *
  * In this example, we use a `when` statement and strings, but you can use a helper that
@@ -67,18 +67,13 @@ repositories {
 ```
 
 ```groovy
-// JVM/Android
-compile 'com.github.pardom.redux-kotlin:lib:1.0.2'
-
-// JavaScript
-compile 'com.github.pardom.redux-kotlin:js:1.0.2'
+compile 'com.github.pardom.redux-kotlin:lib:1.1.0'
 ```
 
 Snapshots of the development version are available the by using [`-SNAPSHOT`](https://jitpack.io/#pardom/redux-kotlin/-SNAPSHOT) as the version.
 
 ### Samples
 
-* [Counter](https://github.com/pardom/redux-kotlin/tree/master/samples/counter)
 * [CleanNews](https://github.com/pardom/CleanNews)
 
 ### Middleware
@@ -92,16 +87,16 @@ Snapshots of the development version are available the by using [`-SNAPSHOT`](ht
 ### License
 
      Copyright (C) 2016 Michael Pardo
-     
+
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
      You may obtain a copy of the License at
-     
+
           http://www.apache.org/licenses/LICENSE-2.0
-     
+
      Unless required by applicable law or agreed to in writing, software
      distributed under the License is distributed on an "AS IS" BASIS,
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
      See the License for the specific language governing permissions and
      limitations under the License.
- 
+
