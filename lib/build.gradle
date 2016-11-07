@@ -3,6 +3,7 @@ apply plugin: 'kotlin'
 repositories {
 	jcenter()
 	mavenCentral()
+	maven { url "https://jitpack.io" }
 	maven { url "http://repository.jetbrains.com/all" }
 }
 
@@ -11,6 +12,7 @@ configurations {
 }
 
 dependencies {
+	compile 'com.github.jvm-redux:jvm-redux-api:1.1.0'
 	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
 	testCompile 'junit:junit:4.12'
@@ -25,6 +27,12 @@ task ktlint(type: JavaExec) {
 	main = "com.github.shyiko.ktlint.Main"
 	classpath = configurations.ktlint
 	args "src/**/*.kt"
+}
+
+task ktlintFormat(type: JavaExec) {
+	main = "com.github.shyiko.ktlint.Main"
+	classpath = configurations.ktlint
+	args "-F", "src/**/*.kt"
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
