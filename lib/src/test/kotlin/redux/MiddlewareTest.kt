@@ -1,8 +1,9 @@
 package redux
 
 import org.jetbrains.spek.api.Spek
-import redux.Middleware.StateProvider
 import redux.api.Dispatcher
+import redux.api.Store
+import redux.api.enhancer.Middleware
 import redux.helpers.Reducers
 import redux.helpers.Todos.Action.AddTodo
 import redux.helpers.Todos.State
@@ -34,14 +35,14 @@ class MiddlewareTest : Spek({
             it("wraps dispatch method with middleware once") {
 
                 var dispatches = 0
-                val middleware = Middleware { store: StateProvider<State>, action: Any, next: Dispatcher ->
+                val middleware = Middleware { store: Store<State>, next: Dispatcher, action: Any ->
                     val result = next.dispatch(action)
                     dispatches++
                     action
                 }
 
                 val initialState = State(listOf(Todo(1, "Hello")))
-                val store = createStore(Reducers.TODOS, initialState, Middleware.apply(middleware))
+                val store = createStore(Reducers.TODOS, initialState, applyMiddleware(middleware))
 
                 assertEquals(1, dispatches)
 
