@@ -12,13 +12,14 @@ configurations {
 }
 
 dependencies {
-	compile 'com.github.jvm-redux:jvm-redux-api:1.1.0'
+	compile 'com.github.jvm-redux.jvm-redux-api:api:sepcs-SNAPSHOT'
 	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
 	testCompile 'junit:junit:4.12'
 	testCompile 'com.nhaarman:mockito-kotlin:0.3.1'
 	testCompile 'org.jetbrains.spek:spek:1.0.9'
 	testCompile 'org.mockito:mockito-core:2.0.86-beta'
+	testCompile 'com.github.jvm-redux.jvm-redux-api:specs:sepcs-SNAPSHOT'
 
 	ktlint 'com.github.shyiko:ktlint:0.1.2'
 }
