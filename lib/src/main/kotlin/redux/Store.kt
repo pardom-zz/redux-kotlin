@@ -63,7 +63,10 @@ fun <S : Any> createStore(
                 finally {
                     isDispatching = false
                 }
-                subscribers.forEach { it.onStateChanged() }
+
+                subscribers
+                        .toList()
+                        .forEach { it.onStateChanged() }
                 return action
             }
 
