@@ -27,7 +27,7 @@ import redux.api.Store.Subscription
  * When a store is created, an "INIT" action is dispatched so that every reducer returns their initial state.
  * This effectively populates the initial state tree.
  */
-object INIT {}
+val INIT = redux.api.Store.INIT!!
 
 /**
  * Creates a Redux store that holds the complete state tree of your component. There should only be a single
@@ -63,7 +63,10 @@ fun <S : Any> createStore(
                 finally {
                     isDispatching = false
                 }
-                subscribers.forEach { it.onStateChanged() }
+
+                subscribers
+                        .toList()
+                        .forEach { it.onStateChanged() }
                 return action
             }
 
