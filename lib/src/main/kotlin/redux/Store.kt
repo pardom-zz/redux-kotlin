@@ -41,9 +41,9 @@ val INIT = redux.api.Store.INIT!!
  * @return An object that holds the complete state of your component.
  */
 fun <S : Any> createStore(
-        reducer: Reducer<S>,
-        initialState: S,
-        enhancer: Enhancer<S> = Enhancer { it }): Store<S> {
+    reducer: Reducer<S>,
+    initialState: S,
+    enhancer: Enhancer<S> = Enhancer { it }): Store<S> {
 
     val creator = Creator<S> { reducer, initialState ->
         object : Store<S> {

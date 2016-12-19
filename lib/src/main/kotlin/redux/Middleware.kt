@@ -27,16 +27,17 @@ import redux.api.enhancer.Middleware
 fun <S : Any> applyMiddleware(vararg middlewares: Middleware<S>): Enhancer<S> {
     return Enhancer { next ->
         Creator { reducer, initialState ->
-            val store = next.create(reducer, initialState)
-            val rootDispatcher = middlewares.foldRight(store as Dispatcher) { middleware, next ->
-                Dispatcher { action ->
-                    middleware.dispatch(store, next, action)
-                }
-            }
             object : Store<S> {
+                private val store = next.create(reducer, initialState)
+                private val rootDispatcher = middlewares.foldRight(store as Dispatcher) { middleware, next ->
+                    Dispatcher { action ->
+                        middleware.dispatch(this, next, action)
+                    }
+                }
+
                 override fun dispatch(action: Any) = rootDispatcher.dispatch(action)
 
-                override fun getState() = store.getState()
+                override fun getState() = store.state
 
                 override fun replaceReducer(reducer: Reducer<S>) = store.replaceReducer(reducer)
 
