@@ -3,6 +3,8 @@ package redux
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
+import org.junit.platform.runner.JUnitPlatform
+import org.junit.runner.RunWith
 import redux.api.Dispatcher
 import redux.api.Store
 import redux.api.enhancer.Middleware
@@ -28,6 +30,7 @@ import kotlin.test.assertEquals
  * limitations under the License.
  */
 
+@RunWith(JUnitPlatform::class)
 class MiddlewareTest : Spek({
 
     describe("Middleware") {

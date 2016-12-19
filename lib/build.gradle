@@ -1,53 +1,55 @@
 apply plugin: 'kotlin'
 
 repositories {
-	jcenter()
-	maven { url "https://jitpack.io" }
+    jcenter()
+    maven { url "https://jitpack.io" }
 }
 
 configurations {
-	ktlint
+    ktlint
 }
 
 dependencies {
-	compile 'com.github.jvm-redux.jvm-redux-api:api:1.2.0'
-	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile 'com.github.jvm-redux.jvm-redux-api:api:1.2.0'
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-	testCompile 'junit:junit:4.12'
-	testCompile 'com.nhaarman:mockito-kotlin:1.0.1'
-	testCompile 'org.jetbrains.kotlin:kotlin-test:1.0.5-3'
-	testCompile 'org.jetbrains.spek:spek-api:1.1.0-beta2'
-	testCompile 'org.mockito:mockito-core:2.3.7'
-	testCompile 'com.github.jvm-redux.jvm-redux-api:specs:1.2.0'
+    testCompile 'junit:junit:4.12'
+    testCompile 'com.nhaarman:mockito-kotlin:1.0.1'
+    testCompile 'org.jetbrains.spek:spek-api:1.1.0-beta2'
+    testCompile 'org.jetbrains.spek:spek-junit-platform-engine:1.1.0-beta2'
+    testCompile 'org.jetbrains.kotlin:kotlin-test:1.0.5-3'
+    testCompile 'org.junit.platform:junit-platform-runner:1.0.0-M3'
+    testCompile 'org.mockito:mockito-core:2.3.7'
+    testCompile 'com.github.jvm-redux.jvm-redux-api:specs:1.2.0'
 
-	ktlint 'com.github.shyiko:ktlint:0.2.2'
+    ktlint 'com.github.shyiko:ktlint:0.2.2'
 }
 
 task ktlint(type: JavaExec) {
-	main = "com.github.shyiko.ktlint.Main"
-	classpath = configurations.ktlint
-	args "src/**/*.kt"
+    main = "com.github.shyiko.ktlint.Main"
+    classpath = configurations.ktlint
+    args "src/**/*.kt"
 }
 
 task ktlintFormat(type: JavaExec) {
-	main = "com.github.shyiko.ktlint.Main"
-	classpath = configurations.ktlint
-	args "-F", "src/**/*.kt"
+    main = "com.github.shyiko.ktlint.Main"
+    classpath = configurations.ktlint
+    args "-F", "src/**/*.kt"
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-	classifier = 'sources'
-	from sourceSets.main.allSource
+    classifier = 'sources'
+    from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-	classifier = 'javadoc'
-	from javadoc.destinationDir
+    classifier = 'javadoc'
+    from javadoc.destinationDir
 }
 
 artifacts {
-	archives sourcesJar
-	archives javadocJar
+    archives sourcesJar
+    archives javadocJar
 }
 
 check.dependsOn ktlint
