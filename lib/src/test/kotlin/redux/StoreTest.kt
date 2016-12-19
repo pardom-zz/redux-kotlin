@@ -41,7 +41,7 @@ class StoreTest : Spek({
                                 Todo(1, "Hello")
                         )
                 ))
-                expect(store.getState()) {
+                expect(store.state) {
                     Todos.State(
                             listOf(
                                     Todo(1, "Hello")
@@ -52,13 +52,13 @@ class StoreTest : Spek({
 
             it("applies the reducer to the previous state") {
                 val store = createStore(Reducers.TODOS, State())
-                expect(store.getState()) { Todos.State() }
+                expect(store.state) { Todos.State() }
 
                 store.dispatch(unknownAction())
-                expect(store.getState()) { Todos.State() }
+                expect(store.state) { Todos.State() }
 
                 store.dispatch(addTodo("Hello"))
-                expect(store.getState()) {
+                expect(store.state) {
                     Todos.State(
                             listOf(
                                     Todo(1, "Hello")
@@ -67,7 +67,7 @@ class StoreTest : Spek({
                 }
 
                 store.dispatch(addTodo("World"))
-                expect(store.getState()) {
+                expect(store.state) {
                     Todos.State(
                             listOf(
                                     Todo(1, "Hello"),
@@ -83,7 +83,7 @@ class StoreTest : Spek({
                                 Todo(1, "Hello")
                         )
                 ))
-                expect(store.getState()) {
+                expect(store.state) {
                     Todos.State(
                             listOf(
                                     Todo(1, "Hello")
@@ -92,7 +92,7 @@ class StoreTest : Spek({
                 }
 
                 store.dispatch(unknownAction())
-                expect(store.getState()) {
+                expect(store.state) {
                     Todos.State(
                             listOf(
                                     Todo(1, "Hello")
@@ -101,7 +101,7 @@ class StoreTest : Spek({
                 }
 
                 store.dispatch(addTodo("World"))
-                expect(store.getState()) {
+                expect(store.state) {
                     Todos.State(
                             listOf(
                                     Todo(1, "Hello"),
@@ -116,7 +116,7 @@ class StoreTest : Spek({
                 val store = createStore(Reducers.TODOS, State())
                 store.dispatch(addTodo("Hello"))
                 store.dispatch(addTodo("World"))
-                expect(store.getState()) {
+                expect(store.state) {
                     Todos.State(
                             listOf(
                                     Todo(1, "Hello"),
@@ -126,7 +126,7 @@ class StoreTest : Spek({
                 }
 
                 store.replaceReducer(Reducers.TODOS_REVERSE)
-                expect(store.getState()) {
+                expect(store.state) {
                     Todos.State(
                             listOf(
                                     Todo(1, "Hello"),
@@ -136,7 +136,7 @@ class StoreTest : Spek({
                 }
 
                 store.dispatch(addTodo("Perhaps"))
-                expect(store.getState()) {
+                expect(store.state) {
                     Todos.State(
                             listOf(
                                     Todo(3, "Perhaps"),
@@ -147,7 +147,7 @@ class StoreTest : Spek({
                 }
 
                 store.replaceReducer(Reducers.TODOS)
-                expect(store.getState()) {
+                expect(store.state) {
                     Todos.State(
                             listOf(
                                     Todo(3, "Perhaps"),
@@ -158,7 +158,7 @@ class StoreTest : Spek({
                 }
 
                 store.dispatch(addTodo("Surely"))
-                expect(store.getState()) {
+                expect(store.state) {
                     Todos.State(
                             listOf(
                                     Todo(3, "Perhaps"),
