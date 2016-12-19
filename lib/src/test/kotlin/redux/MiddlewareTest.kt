@@ -1,6 +1,8 @@
 package redux
 
 import org.jetbrains.spek.api.Spek
+import org.jetbrains.spek.api.dsl.describe
+import org.jetbrains.spek.api.dsl.it
 import redux.api.Dispatcher
 import redux.api.Store
 import redux.api.enhancer.Middleware
