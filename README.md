@@ -67,7 +67,7 @@ repositories {
 ```
 
 ```groovy
-compile 'com.github.pardom.redux-kotlin:lib:1.1.0'
+compile 'com.github.pardom:redux-kotlin:<version>'
 ```
 
 Snapshots of the development version are available the by using [`-SNAPSHOT`](https://jitpack.io/#pardom/redux-kotlin/-SNAPSHOT) as the version.
